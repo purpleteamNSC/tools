@@ -1,8 +1,8 @@
-# Trellix Solutions Integration with Python 🚀
+# Tools python for trellix 🚀
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange)
-![Trellix](https://img.shields.io/badge/Trellix-Solutions-brightgreen)
+![Purpleteam](https://img.shields.io/badge/Purpleteam-brightgreen)
 
 Bem-vindo(a)! Este repositório contém scripts desenvolvidos em Python para integrar e automatizar soluções da **Trellix**. O objetivo principal é simplificar e facilitar a interação com os serviços da Trellix, como autenticação e comunicação com suas APIs.
 
