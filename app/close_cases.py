@@ -6,9 +6,9 @@ load_dotenv()
 
 # ENV
 
-helix_id = os.getenv('helix_id')
-client_id = os.getenv('client_id')
-secret = os.getenv('secret')
+helix_id = os.getenv('md_helix_id')
+client_id = os.getenv('md_client_id')
+secret = os.getenv('md_secret')
 scope = os.getenv('scope_helix')
 
 x = Helix_T("x", helix_id, client_id, secret, scope)
