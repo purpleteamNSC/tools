@@ -11,9 +11,9 @@ def close_cases_lt():
 
     # Instacia
     x = Helix_T(
-        os.getenv("md_helix_id"),
-        os.getenv("md_client_id"),
-        os.getenv("md_secret"),
+        os.getenv("helix_id"),
+        os.getenv("client_id"),
+        os.getenv("secret"),
         os.getenv("scope_helix"),
     )
 
@@ -35,7 +35,7 @@ def close_cases_lt():
 def close_cases_lf():
 
     # Instancia
-    h = Helix_F(os.getenv("be_helix_id"), os.getenv("be_helix_api_key"))
+    h = Helix_F(os.getenv("helix_id"), os.getenv("helix_api_key"))
 
     while True:
         data = h.get_cases()
