@@ -1,30 +1,52 @@
 import time
 import os
-from helix import Helix_T
+from helix import Helix_T, Helix_F
 from dotenv import load_dotenv
+
 load_dotenv()
 
-# ENV
 
-helix_id = os.getenv('md_helix_id')
-client_id = os.getenv('md_client_id')
-secret = os.getenv('md_secret')
-scope = os.getenv('scope_helix')
+# fecha todos os cases lado trellix
+def close_cases_lt():
 
-x = Helix_T("x", helix_id, client_id, secret, scope)
+    # Instacia
+    x = Helix_T(
+        os.getenv("md_helix_id"),
+        os.getenv("md_client_id"),
+        os.getenv("md_secret"),
+        os.getenv("scope_helix"),
+    )
 
-data = x.get_cases()
-limit = data['meta']['count']
-cases = x.get_cases()['results']
+    while True:
+        data = x.get_cases()
+        count = data["meta"]["count"]
+        cases = x.get_cases()["results"]
 
-while True:
-    count = data['meta']['count']
-    cases = x.get_cases()['results']
+        if count != 0:
+            for case in cases:
+                x.delete_case(case["id"])
 
-    if count != 0:
-        for case in cases:
-            x.delete_case(case['id'])
+        if count == 0:
+            print("Todos os casos foram deletados")
+            time.sleep(3600)
 
-    if count == 0:
-        print('Todos os casos foram deletados')
-        time.sleep(3600)
+
+# fecha todos os cases com declared lado fireeye
+def close_cases_lf():
+
+    # Instancia
+    h = Helix_F(os.getenv("be_helix_id"), os.getenv("be_helix_api_key"))
+
+    while True:
+        data = h.get_cases()
+        count = data["meta"]["count"]
+        cases = data["results"]
+
+        if count != 0:
+            cases = data["results"]
+            for case in cases:
+                h.delete_case(case["id"])
+
+        if count == 0:
+            print("Todos os casos foram deletados")
+            time.sleep(3600)
