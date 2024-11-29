@@ -69,8 +69,12 @@ class Umbrella:
 
 
 
-u = Umbrella(os.getenv('umbrella_key'),os.getenv('umbrella_secret'))
+# u = Umbrella(os.getenv('umbrella_key'),os.getenv('umbrella_secret'))
 
-print(u.get_token())
-# u.get_networks()
+# print(u.get_token())
+# # u.get_networks()
 
+def t_umbrella():
+    print('umbrella.py')
+
+t_umbrella()
