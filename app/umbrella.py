@@ -73,8 +73,3 @@ class Umbrella:
 
 # print(u.get_token())
 # # u.get_networks()
-
-def t_umbrella():
-    print('umbrella.py')
-
-t_umbrella()
