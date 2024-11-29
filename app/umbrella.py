@@ -16,9 +16,7 @@ class Umbrella:
     def get_token(self):
         url = 'https://api.umbrella.com/auth/v2/token'
 
-        headers = {
-            'grant_type': 'client_credentials'
-        }
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
         response = requests.post(url, headers=headers, auth=HTTPBasicAuth(self.client_id, self.client_secret))
         response_json = response.json()
@@ -73,6 +71,6 @@ class Umbrella:
 
 u = Umbrella(os.getenv('umbrella_key'),os.getenv('umbrella_secret'))
 
-# print(u.get_token())
-u.get_networks()
+print(u.get_token())
+# u.get_networks()
 
