@@ -102,7 +102,96 @@ class Helix_T:
 
         return None
 
+    # SEARCH
+
+    def get_search_saved(self):
+        """
+        Pega todoa as pesquisas salvas para gerar o rem.
+        """
+        url = f"https://xdr.trellix.com/helix/id/{self.helix_id}/api/v3/search/saved/?limit=100"
+        try:
+            headers = {
+                "x-trellix-api-token": f"Bearer {self.get_access_token()}",
+                "accept": "application/json",
+            }
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()["results"]
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print(f"Other error occurred: {err}")
+
+        return None
+
+    # ARCHIVE
+
+    def get_search_archive(self):
+        """
+        Pega todas as pequisas realizadas.
+        """
+        url = f"https://xdr.trellix.com/helix/id/{self.helix_id}/api/v1/search/archive/"
+        try:
+            headers = {
+                "x-trellix-api-token": f"Bearer {self.get_access_token()}",
+                "accept": "application/json",
+            }
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            return response.json()["data"]
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print(f"Other error occurred: {err}")
+
+        return None
+
+    def delete_search_archive(self):
+        """
+        Deleta todas as pesquisas realizadas.
+        """
+        url = f"https://xdr.trellix.com/helix/id/{self.helix_id}/api/v1/search/archive/"
+        try:
+            headers = {
+                "x-trellix-api-token": f"Bearer {self.get_access_token()}",
+                "accept": "application/json",
+            }
+            response = requests.delete(url, headers=headers)
+            return response.status_code
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print(f"Other error occurred: {err}")
+
+        return None
     
+    def post_search_archive(self, query):
+        """
+        Cria uma pesquisa no archive.
+        """
+        url = f"https://xdr.trellix.com/helix/id/{self.helix_id}/api/v1/search/archive/"
+
+        payload = {
+            "query" : query
+        }
+
+        try:
+            headers = {
+                "x-trellix-api-token": f"Bearer {self.get_access_token()}",
+                "accept": "application/json",
+            }
+            response = requests.post(url, headers=headers, payload=payload)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print(f"Other error occurred: {err}")
+
+        return None
+
+
+
 # Helix lado Fireeye
 class Helix_F:
     def __init__(self, helix_id, api):
