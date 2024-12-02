@@ -165,14 +165,16 @@ class Helix_T:
 
         return None
     
-    def post_search_archive(self, query):
+    def post_search_archive(self, query, data):
         """
         Cria uma pesquisa no archive.
         """
         url = f"https://xdr.trellix.com/helix/id/{self.helix_id}/api/v1/search/archive/"
 
         payload = {
-            "query" : query
+            "query": query,
+            "searchStartDate": data['start'],
+            "searchEndDate": data['end'],
         }
 
         try:
@@ -180,13 +182,12 @@ class Helix_T:
                 "x-trellix-api-token": f"Bearer {self.get_access_token()}",
                 "accept": "application/json",
             }
-            response = requests.post(url, headers=headers, payload=payload)
+            response = requests.post(url, headers=headers, json=payload)
             response.raise_for_status()
-            return response.json()
-        except requests.exceptions.HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-        except Exception as err:
-            print(f"Other error occurred: {err}")
+            return response.json()['data']['id']
+        except:
+            print(response.status_code)
+            return response.status_code
 
         return None
 
