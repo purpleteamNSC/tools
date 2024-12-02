@@ -102,7 +102,7 @@ class Helix_T:
 
         return None
 
-
+    
 # Helix lado Fireeye
 class Helix_F:
     def __init__(self, helix_id, api):
