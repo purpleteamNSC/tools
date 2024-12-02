@@ -78,9 +78,11 @@ def set_date():
 #     print(f"{pesquisa['id']} - {pesquisa['query']}" )
 #     print('')
 
+
 # PEGA TODAS AS PESQUISAS FEITAS NO ARCHIVE
 # pesquisas_feitas = helix.get_search_archive()
 # print(pesquisas_feitas)
+
 
 # DELETA TODOS AS PESQUISAS NO ARCHIVE
 # delete_all = helix.delete_search_archive()
@@ -90,27 +92,32 @@ def set_date():
 # else:
 #     print("Error")
 
+
 # CRIA UMA PESQUISA EM ARCHIVE
 # query = 'has=metaclass | groupby meta_cbname'
 # helix.post_search_archive(query, set_date())
 
 
 # BUSCA O RESULTADO DE UMA PESQUISA FEITA
-result = helix.result_search_archive(19809)
-check = result['data'][0]['state']
-process = result['data'][0]['percentComplete']
-print(process)
+# result = helix.result_search_archive(19809)
+# check = result['data'][0]['state']
+# process = result['data'][0]['percentComplete']
+
+
+# while True:
+#     result = helix.result_search_archive(19809)
+#     check = result['data'][0]['state']
+#     process = result['data'][0]['percentComplete']
+
+#     if check == 'completed':
+#         print(check)
+#         break
+#     else:
+#         print(process) 
+#         time.sleep(60)
+
+
 # print(result['query'])
 # pprint(result['queryAST'])
 
 # pprint(result['results']['results']['aggregations'])
-
-# while True:
-#     result = helix.result_search_archive(19809)
-#     if check == 'completed':
-#         print(result['state'])
-#         break
-#     else:
-#         print(result['percentComplete']) 
-#         time.sleep(60)
-
