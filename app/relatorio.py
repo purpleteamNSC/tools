@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from helix import Helix_T
 from pathlib import Path
 from datetime import datetime
+import time
+from pprint import pprint
 
 load_dotenv()
 
@@ -89,11 +91,26 @@ def set_date():
 #     print("Error")
 
 # CRIA UMA PESQUISA EM ARCHIVE
-# query = 'has=class | groupby class'
+# query = 'has=metaclass | groupby meta_cbname'
 # helix.post_search_archive(query, set_date())
 
 
-# # print(set_date())
-# datas = set_date()
-# print(datas['start'])
+# BUSCA O RESULTADO DE UMA PESQUISA FEITA
+result = helix.result_search_archive(19809)
+check = result['data'][0]['state']
+process = result['data'][0]['percentComplete']
+print(process)
+# print(result['query'])
+# pprint(result['queryAST'])
+
+# pprint(result['results']['results']['aggregations'])
+
+# while True:
+#     result = helix.result_search_archive(19809)
+#     if check == 'completed':
+#         print(result['state'])
+#         break
+#     else:
+#         print(result['percentComplete']) 
+#         time.sleep(60)
 
