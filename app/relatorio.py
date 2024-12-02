@@ -5,37 +5,32 @@ from pathlib import Path
 from datetime import datetime
 import time
 from pprint import pprint
+# from openpyxl import load_workbook
 
 load_dotenv()
-
-
-helix_id = os.getenv("helix_id")
-client_id = os.getenv("client_id")
-secret = os.getenv("secret")
-api_key = os.getenv("trellix_api_key")
-scope = os.getenv("scope_helix")
-
-helix = Helix_T(helix_id, client_id, secret, scope)
-
-token = helix.get_access_token()
 
 # FUNÇOES
 
 
-# Cria a pasta REM caso nao exista
-dir_atual = Path.cwd()
-pasta_rem = dir_atual / "app" / "rem"
+def create_path_all(company):
+    """
+    Cria a pasta REM caso nao exista
+    """  
+    dir_atual = Path.cwd()
+    pasta_rem = dir_atual / "app" / "rem"
+    pasta_company = pasta_rem / company
 
-
-def create_path_rem():
     if not pasta_rem.exists():
         pasta_rem.mkdir()
+
+    if not pasta_company.exists():
+        pasta_company.mkdir()
 
 
 def set_date():
     data_atual = datetime.now()
- 
-    mes_atual = data_atual.month 
+
+    mes_atual = data_atual.month
     ano_atual = data_atual.year
 
     meses = {
@@ -53,7 +48,6 @@ def set_date():
         "12": 31,
     }
 
-
     if mes_atual == 1:
         mes_atual = 12
         ano_atual -= 1
@@ -61,14 +55,15 @@ def set_date():
         mes_atual -= 1
 
     datas = {
-        "start" : f"{ano_atual}-{mes_atual}-01T00:00:00Z", # year-month-01T00:00:00Z
-        "end" : f"{ano_atual}-{mes_atual}-{meses[str(mes_atual)]}T00:00:00Z" # year-month-30T00:00:00Z
+        "start": f"{ano_atual}-{mes_atual}-01T00:00:00Z",  # year-month-01T00:00:00Z
+        "end": f"{ano_atual}-{mes_atual}-{meses[str(mes_atual)]}T00:00:00Z",  # year-month-30T00:00:00Z
     }
 
     return datas
 
 
 # RDN
+
 
 # PEGA TODAS AS PESQUISAS SALVAS
 # pesquisas = helix.get_search_saved()
@@ -113,11 +108,36 @@ def set_date():
 #         print(check)
 #         break
 #     else:
-#         print(process) 
+#         print(process)
 #         time.sleep(60)
 
 
-# print(result['query'])
-# pprint(result['queryAST'])
+# PROCESSAR OS DADOS DE RESULTADO
+# result_pesquisa = helix.result_search_archive(19808)['results']['results']['aggregations'].items()
+# # print(result['query'])
+# # pprint(result['queryAST'])
+# data = next((v['buckets'] for _, v in result_pesquisa if 'buckets' in v), None)
+# pprint(data)
 
-# pprint(result['results']['results']['aggregations'])
+
+# FUNÇAO PARA CRIAR O XLS
+# def create_xlsx(company):
+    
+
+#     dir_atual = Path.cwd()
+#     pasta_rem = dir_atual / "app" / "rem"
+#     pasta_company = pasta_rem / company
+
+
+#     ...
+
+
+def main(company):
+    helix = Helix_T(os.getenv("helix_id"), os.getenv("client_id"), os.getenv("secret"), os.getenv("scope_helix"))
+    create_path_all(company)
+    # PROCESSAR OS DADOS DE RESULTADO
+    result_pesquisa = helix.result_search_archive(19808)['results']['results']['aggregations'].items()
+    data = next((v['buckets'] for _, v in result_pesquisa if 'buckets' in v), None)
+    pprint(data)
+
+main('EMPRESA-A')
