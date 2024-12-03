@@ -16,11 +16,11 @@ def get_umbrella_token(key, secret):
     auth = (key, secret)
 
     data = {
-        'grant_type': 'client_credentials'
+        "grant_type": "client_credentials"
     }
 
     headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/x-www-form-urlencoded"
     }
 
     response = requests.post(url, auth=auth, data=data, headers=headers)
@@ -102,12 +102,10 @@ def add_destination_to_list(token,ioc):
 # HOMOLOGAÇÃO 
 token = get_umbrella_token(key, secret)
 
-# if token:
-#     add_destination_to_list(token,'tinyurl.com')
-#     add_destination_to_list(token,'www.tinyurl.com')
-#     add_destination_to_list(token,'iti.itau')
-#     add_destination_to_list(token,'20.212.168.117')
+if token:
+    add_destination_to_list(token,'explainplaysettwisting.com')
 
 
-lists = get_destination_list(token)
-pprint(lists)
+
+# lists = get_destination_list(token)
+# pprint(lists)
