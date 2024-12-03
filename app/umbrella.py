@@ -1,75 +1,113 @@
-import os
-import requests
-from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
+import requests
+import os
+from pprint import pprint
 
 load_dotenv()
 
-class Umbrella:
-    def __init__(self, client_id, client_secret):
-        self.base_url = 'https://api.umbrella.com'
-        self.client_id = client_id
-        self.client_secret = client_secret
+key = os.getenv('umbrella_key')
+secret = os.getenv('umbrella_secret')
+list = os.getenv('list_umbrella')
 
-
-    # token
-    def get_token(self):
-        url = 'https://api.umbrella.com/auth/v2/token'
-
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
-        response = requests.post(url, headers=headers, auth=HTTPBasicAuth(self.client_id, self.client_secret))
-        response_json = response.json()
-        token = response_json['access_token']
-        return token
-
-
-    # pega todas as redes criadas
-    def get_networks(self):
-        resource = '/deployments/v2/networks'
-
-        url = self.base_url + resource
-
-        headers = {
-            'Authorization': f'Bearer {self.get_token()}',
-            'Content-Type': 'application/json'
-        }
-
-        response = requests.get(url=url, headers=headers)
-
-        data = response.json()
-
-        print(data)
+def get_umbrella_token(key, secret):
     
+    url = 'https://api.umbrella.com/auth/v2/token'
 
-    # cria uma nova rede 
-    def set_networks(self,name):
-        resource = '/deployments/v2/networks'
+    auth = (key, secret)
 
-        url = self.base_url + resource
+    data = {
+        'grant_type': 'client_credentials'
+    }
 
-        headers = {
-            'Authorization': f'Bearer {self.get_token()}',
-            'Content-Type': 'application/json'
-        }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
 
-        data = {
-            'name': f'{name}',
-            'prefixLength': 32,
-            'isDynamic': 'true',
-            'status': 'OPEN'
-        }
+    response = requests.post(url, auth=auth, data=data, headers=headers)
 
-        response = requests.post(url=url, headers=headers, json=data)
+    if response.status_code == 200:
+        return response.json().get('access_token')
+    else:
+        print(f"Erro: {response.status_code} - {response.text}")
+        return None
 
+def get_networks(token):
+    url = 'https://api.umbrella.com/deployments/v2/networks'
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+    }
+
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        print(response.json())
+        return response.json()
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.json())
+        return None
+
+def get_destination_list(token):
+    url = 'https://api.umbrella.com/policies/v2/destinationlists'
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+    }
+
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
         data = response.json()
+        data = data['data']
+        return data
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.json())
+        return None
 
-        print(data)
+def add_destination_to_list(token,ioc):
+    url = f'https://api.umbrella.com/policies/v2/destinationlists/{list}/destinations'
+
+    data = [
+        {
+            "destination": ioc,
+            "comment": "MXDR"
+        }
+    ]
+
+   
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token,
+    }
+
+    
+    response = requests.post(url, json=data, headers=headers)
+
+    
+    if response.status_code == 200:
+        print(response.status_code)
+        print("Adicionado na lista com sucesso")
+        return response.json()
+    else:
+        # Imprime a mensagem de erro caso ocorra algum problema
+        print(f"Erro: {response.status_code} - {response.text}")
+        return None
 
 
+# HOMOLOGAÇÃO 
+token = get_umbrella_token(key, secret)
+
+# if token:
+#     add_destination_to_list(token,'tinyurl.com')
+#     add_destination_to_list(token,'www.tinyurl.com')
+#     add_destination_to_list(token,'iti.itau')
+#     add_destination_to_list(token,'20.212.168.117')
 
 
-# u = Umbrella(os.getenv('umbrella_key'),os.getenv('umbrella_secret'))
-
-# print(u.get_token())
-# # u.get_networks()
+lists = get_destination_list(token)
+pprint(lists)
