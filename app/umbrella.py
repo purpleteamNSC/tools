@@ -103,7 +103,7 @@ def add_destination_to_list(token,ioc):
 token = get_umbrella_token(key, secret)
 
 if token:
-    add_destination_to_list(token,'explainplaysettwisting.com')
+    add_destination_to_list(token,'ll.com.br')
 
 
 
