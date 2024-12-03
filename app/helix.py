@@ -183,8 +183,9 @@ class Helix_T:
                 "accept": "application/json",
             }
             response = requests.post(url, headers=headers, json=payload)
-            response.raise_for_status()
-            return response.json()['data']['id']
+            id = response.json()['data']['id']
+            print(id)
+            return id
         except:
             print(response.status_code)
             return response.status_code
