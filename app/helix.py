@@ -300,7 +300,7 @@ class Helix_F:
         return None
 
     # adicionar lista por ID
-    def post_list_id(self, id_lista, value):
+    def post_list_id(self, id_lista, value,coment):
         """
         Adiciona a uma lista
         """
@@ -316,15 +316,11 @@ class Helix_F:
                 "value": value,
                 "type": "misc",
                 "risk": "Low",
-                "notes": "secdevops",
+                "notes": coment,
             }
 
             response = requests.post(url, headers=headers, json=data)
 
-            # if response.status_code == 200:
-            #     print(response.json())
-
-            # response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
