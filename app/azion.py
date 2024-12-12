@@ -21,7 +21,7 @@ class Azion:
 
         try:
             res = requests.get(url, headers=headers)
-            print(res.json())
+            # print(res.json())
             return res.json()
         except:
             print(res.status_code)

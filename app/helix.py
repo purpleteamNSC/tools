@@ -164,7 +164,7 @@ class Helix_T:
             print(f"Other error occurred: {err}")
 
         return None
-    
+
     def post_search_archive(self, query, data):
         """
         Cria uma pesquisa no archive.
@@ -173,8 +173,8 @@ class Helix_T:
 
         payload = {
             "query": query,
-            "searchStartDate": data['start'],
-            "searchEndDate": data['end'],
+            "searchStartDate": data["start"],
+            "searchEndDate": data["end"],
         }
 
         try:
@@ -183,7 +183,7 @@ class Helix_T:
                 "accept": "application/json",
             }
             response = requests.post(url, headers=headers, json=payload)
-            id = response.json()['data']['id']
+            id = response.json()["data"]["id"]
             print(id)
             return id
         except:
@@ -211,7 +211,6 @@ class Helix_T:
             print(f"Other error occurred: {err}")
 
         return None
-
 
 
 # Helix lado Fireeye
@@ -273,7 +272,7 @@ class Helix_F:
 
         return None
 
-   # Pegar lista por ID
+    # Pegar lista por ID
     def get_list_id(self, id_lista):
         """
         Pega de uma lista
@@ -286,13 +285,46 @@ class Helix_F:
                 "accept": "application/json",
             }
 
-
             response = requests.get(url, headers=headers)
 
             # if response.status_code == 200:
             #     print(response.json())
 
             response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            print(f"Other error occurred: {err}")
+
+        return None
+
+    # adicionar lista por ID
+    def post_list_id(self, id_lista, value):
+        """
+        Adiciona a uma lista
+        """
+        url = f"{self.url}/helix/id/{self.helix_id}/api/v3/lists/{id_lista}/items/"
+
+        try:
+            headers = {
+                "x-fireeye-api-key": self.api,
+                "accept": "application/json",
+            }
+
+            data = {
+                "value": value,
+                "type": "misc",
+                "risk": "Low",
+                "notes": "secdevops",
+            }
+
+            response = requests.post(url, headers=headers, json=data)
+
+            # if response.status_code == 200:
+            #     print(response.json())
+
+            # response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP error occurred: {http_err}")
