@@ -30,9 +30,13 @@ class Azion:
 
 
 token = os.getenv('token_azion')
-list = os.getenv('azion_list')
+
+hosts_waf_pnb_azion = os.getenv('hosts_waf_pnb_azion')
+white_list_pnb_azion = os.getenv('white_list_pnb_azion')
 
 
 azion = Azion(token)
-azion.get_list_azion(list)
+azion.get_list_azion(hosts_waf_pnb_azion)
+print('')
+azion.get_list_azion(white_list_pnb_azion)
 
