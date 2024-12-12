@@ -9,7 +9,7 @@ umbrella:
 azion:
 	@python app/azion.py
 
-app:
+tolist:
 	@python app/app.py
 
 relatorio:
