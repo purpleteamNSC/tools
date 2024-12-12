@@ -9,6 +9,9 @@ umbrella:
 azion:
 	@python app/azion.py
 
+app:
+	@python app/app.py
+
 relatorio:
 	@python app/relatorio.py
 
